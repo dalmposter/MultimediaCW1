@@ -32,51 +32,34 @@ public class ImageManipulation {
    // take a cartesian coordinate (I,J) assumed to be in the positive octant OGV
    // and compute (preI, PreJ) returned as elements pre[0] pre[1] of pre 
     static int[] octlinTrans (int O, int D, int I, int J, int size) { 
-   	  		   
-    	//length from O to D
-    	double innerLen = D - O;
-    	//length from D to P
-    	double outterLen;
-    	//length from O to (i, j)
-    	double pointLen = Math.sqrt((I * I) + (J * J));
-    	double Px, Py, Dx, Dy;
-    	if((I * I) > (J * J))
+  		   
+        // we will compute preI and preJ and return them in pre 
+    	int [] pre = new int[2];
+
+    	// compute d from I and J 
+    	double d = Math.sqrt((I * I) + (J * J));
+    
+    	// calculate P (from theta, itself from I and J) 
+    	double theta, P;
+    	theta = Math.atan(J / I);
+    	if(I > J)
     	{
-    		Px = O + size;
-    		Py = (J / I) * size;
-    		outterLen = Math.sqrt((Px * Px) + (Py * Py)) - O;
+    		P = size / Math.cos(theta);
     	}
     	else
     	{
-    		Py = O + size;
-    		Px = (I / J) * size;
-    		outterLen = Math.sqrt((Px * Px) + (Py * Py)) - O;
+    		P = size / Math.sin(theta);
     	}
-    	
-    	double DtoPoint = pointLen - innerLen;
-    	double mirrorLen = (DtoPoint / outterLen) * innerLen;
-    	double preLenFromO = D - mirrorLen;
-    	
-    	if(preLenFromO < 0) System.out.println("Potential Error occured: negative distance from O in octlinTrans");
-    	
-	    // we will compute preI and preJ and return them in pre 
-		int [] pre = new int[2];
+    		
+    	// compute pred from O, D, d, p
+    	double pred = linTrans(O, D, d, P);
 
-		// compute d from I and J 
-		double d = ?? 
-		    
-		// calculate P (from theta, itself from I and J) 
-		?? 
+	    pre[0] = pred * Math.cos(theta);
+	    pre[1] = pred * Math.sin(theta);
 
-		// compute pred from O, D, d, p
-		double pred = linTrans(??);
+	    return pre;
 
-		// now compute pre ....
-		// ?? 
-
-		return pre;
-
-	  } // end octlinTrans
+} // end octlinTrans
 
 //----- template code commented out END
 
@@ -160,26 +143,41 @@ public class ImageManipulation {
         			// so that you now work with A(0,0) in cartesian coordinates 
         			// I and J below are relative cartesian coordinates 
         			// note: Cart Coord -j moves up (ie - ) by an amount -y  
-                    int I = ??
-                    int J = ??
+                    int I = i - x;
+                    int J = -j + y;
 
-	            // set d = distance of origin to (I,J)
-        	    ??
+                    // set d = distance of origin to (I,J)
+                    int d = Math.sqrt((I * I) + (J * J));
 
 		    // if (I,J) is outside the circle of radius size/3
 		    // then we compute (preI, preJ) from (I,J) using octlinTrans
-		    int radius = ??
-		    if (??) { // radius test 
+		    int radius = size / 3;
+		    if (d > radius) { // radius test 
 		     // perform linear transformation in octant OGV 
 		     // 0 < J < I
-         	     if (??) {
-                       pre = ?? // use octlinTrans
-		       preI = ??; preJ = ??;}
+		    	if (0 < J < I) {
+		    		pre = octlinTrans(n, d, I, J, size); // use octlinTrans
+		    		preI = pre[0]; preJ = pre[1];
+         	    }
 		     // perform linear transformation in octant OVH 
 		     // 0 < -J < I 
-		     else if (??) {??}
+		    	else if (0 < -J < I)
+		    	{
+		    		//rotate octant 90 degrees counter clockwise to be in position x > 0, y > 0
+		    		tempI = I;
+		    		I = -J;
+		    		J = tempI;
+		    		
+		    		pre = octlinTrans(n, d, I, J, size);
+		    		preI = pre[0]; preJ = pre[1];
+		    		
+		    		//rotate octant 90 degrees clockwise to return to actual position
+		    		tempI = I;
+		    		I = J;
+		    		J = -tempI;
+		    	}
 		     // perform linear transformation in octant OKU 
-		     ?? 
+		    	else if()
 		     // perform linear transformation in octant OUF
 		     ?? 
 		     // identity transformation elsewhere (outside the circle) 
@@ -195,8 +193,8 @@ public class ImageManipulation {
 
 		    } // matches radius test 
 		    else { 
-	      	       // what if we are inside the circle? 
-		       ?? } // end if  
+		    	image.setRGB(i, j, 0xaaaaaa);
+		    } // end if  
 
 	} // end forLoop j
        	} // end forLoop i
