@@ -27,32 +27,58 @@ public class ImageManipulation {
 
 //----- template code commented out END
 
-/* ----- template code commented out BEGIN         
+// ----- template code commented out BEGIN
     
    // take a cartesian coordinate (I,J) assumed to be in the positive octant OGV
    // and compute (preI, PreJ) returned as elements pre[0] pre[1] of pre 
     static int[] octlinTrans (int O, int D, int I, int J, int size) { 
    	  		   
-	            // we will compute preI and preJ and return them in pre 
-		    int [] pre = ?? 
+    	//length from O to D
+    	double innerLen = D - O;
+    	//length from D to P
+    	double outterLen;
+    	//length from O to (i, j)
+    	double pointLen = Math.sqrt((I * I) + (J * J));
+    	double Px, Py, Dx, Dy;
+    	if((I * I) > (J * J))
+    	{
+    		Px = O + size;
+    		Py = (J / I) * size;
+    		outterLen = Math.sqrt((Px * Px) + (Py * Py)) - O;
+    	}
+    	else
+    	{
+    		Py = O + size;
+    		Px = (I / J) * size;
+    		outterLen = Math.sqrt((Px * Px) + (Py * Py)) - O;
+    	}
+    	
+    	double DtoPoint = pointLen - innerLen;
+    	double mirrorLen = (DtoPoint / outterLen) * innerLen;
+    	double preLenFromO = D - mirrorLen;
+    	
+    	if(preLenFromO < 0) System.out.println("Potential Error occured: negative distance from O in octlinTrans");
+    	
+	    // we will compute preI and preJ and return them in pre 
+		int [] pre = new int[2];
 
-		    // compute d from I and J 
-		    double d = ?? 
+		// compute d from I and J 
+		double d = ?? 
 		    
-		    // calculate P (from theta, itself from I and J) 
-		    ?? 
+		// calculate P (from theta, itself from I and J) 
+		?? 
 
-		    // compute pred from O, D, d, p
-		    double pred = linTrans(??);
+		// compute pred from O, D, d, p
+		double pred = linTrans(??);
 
-		    // now compute pre ....
-		    // ?? 
+		// now compute pre ....
+		// ?? 
 
-		    return pre;
+		return pre;
 
 	  } // end octlinTrans
 
------ template code commented out END */
+//----- template code commented out END
 
 // ---- BEGIN linearBox 
 
@@ -109,33 +135,33 @@ public class ImageManipulation {
 
     static public void linearOct(BufferedImage image, int n, int x, int y, int size) {
 					 
-	BufferedImage temp=new BufferedImage(image.getWidth(), image.getHeight(), image.getType());
+    	BufferedImage temp=new BufferedImage(image.getWidth(), image.getHeight(), image.getType());
         (temp.getGraphics()).drawImage(image, 0, 0, image.getWidth(), image.getHeight(),null);
 
-/* ----- template code commented out BEGIN     
+// ----- template code commented out BEGIN     
 
-// check if A(x,y) lies within image
-if (??) {
-// loop visiting each pixel in A(x,y) at image coordinate (i,j) 
-   for (??) {
-   for (??) {
-       // Apply IMGTRANS to each line ODP specified by an (i,j): 
+        // check if A(x,y) lies within image
+        if (x + size < image.getWidth() && x - size >= 0 && y + size < image.getHeight() && y - size >= 0) {
+        	// loop visiting each pixel in A(x,y) at image coordinate (i,j) 
+        	for (int i = x - size; i <= x + size; i++) {
+   				for(int j = y - size; j <= y + size; j++) {
+        			// Apply IMGTRANS to each line ODP specified by an (i,j): 
 		     
-		    // a list to store preI and preJ as element 0 and 1 
-		    // pre is calculated below using octlinTrans
-		    int [] pre = new int[2];
-		    int preI; 
-		    int preJ;
+        			// a list to store preI and preJ as element 0 and 1 
+        			// pre is calculated below using octlinTrans
+        			int [] pre = new int[2];
+        			int preI; 
+        			int preJ;
 
-		    // convert image coordinates (i,j) to cartesian coordinates 
-		    //  .... for example mouse position (x,y) is converted to (x,-y)
+        			// convert image coordinates (i,j) to cartesian coordinates 
+        			//  .... for example mouse position (x,y) is converted to (x,-y)
        	    	    // then move the mouse position to the origin (0,0) and 
-		    // ... translate all other positions relatively ...
-		    // so that you now work with A(0,0) in cartesian coordinates 
-		    // I and J below are relative cartesian coordinates 
-		    // note: Cart Coord -j moves up (ie - ) by an amount -y  
+        			// ... translate all other positions relatively ...
+        			// so that you now work with A(0,0) in cartesian coordinates 
+        			// I and J below are relative cartesian coordinates 
+        			// note: Cart Coord -j moves up (ie - ) by an amount -y  
                     int I = ??
-		    int J = ??
+                    int J = ??
 
 	            // set d = distance of origin to (I,J)
         	    ??
@@ -176,7 +202,7 @@ if (??) {
        	} // end forLoop i
     } // end check that A(x,y) is in image 
 
------ template code commented out END */
+//----- template code commented out END
 
  } // end method linearOct 
 
