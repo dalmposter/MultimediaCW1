@@ -17,16 +17,15 @@ import java.util.*;
 
 public class ImageManipulation {
 
-/* ----- template code commented out BEGIN     
+// ----- template code commented out BEGIN     
 
     // linear transformation to compute prei from i
-    // O D and P are points on a line with i between D and P 
+    // O D and P are points on a line with i between D and P
     static double linTrans (double O, double D, double i, double P) {
-	double prei = // ?? 
-	    // ?? 
+    	return D - (((i - D) / (P - D)) * (D - O));
     }
 
------ template code commented out END */
+//----- template code commented out END
 
 /* ----- template code commented out BEGIN         
     
@@ -59,40 +58,50 @@ public class ImageManipulation {
 
     static public void linearBox(BufferedImage image, int n, int x, int y, int size) {
 					 
-       BufferedImage temp = new BufferedImage(image.getWidth(), image.getHeight(), image.getType());
-       (temp.getGraphics()).drawImage(image, 0, 0, image.getWidth(), image.getHeight(),null);
+    	BufferedImage temp = new BufferedImage(image.getWidth(), image.getHeight(), image.getType());
+    	(temp.getGraphics()).drawImage(image, 0, 0, image.getWidth(), image.getHeight(),null);
 
-/* ----- template code commented out BEGIN     
+// ----- template code commented out BEGIN     
 
-// check if A(x,y) lies within image
-if (??) {
-// loop visiting each pixel p at coordinate (i,j) in A(x,y) 
-   for (int i=??; i<=??; ??) {
-   ?? // <---- start a for loop for j here 
-       // now apply IMGTRANS as per instructions 
-                    
-		 // set values for O, D, P
-		 ?? 
-		 
-		 // ensure that D lies between O and P (as n varies)
-		 // if n too large restrict D to P
-		 ??
-		 // spinner box allows n < 0; if so, reset n to 0
-		 ??
+    	// check if A(x,y) lies within image
+    	if (x + size < image.getWidth() && x - size >= 0 && y + size < image.getHeight() && y - size >= 0) {
+    		// loop visiting each pixel p at coordinate (i,j) in A(x,y) 
+    		// set values for O, D, P
+    		int O, D, P;
+    		O = x - size;
+    		D = x + n;
+    		P = x + size;
+	 
+   			// ensure that D lies between O and P (as n varies)
+   			// if n too large restrict D to P
+   			if (D > P) D = P;
+   			// spinner box allows n < 0; if so, reset n to 0
+   			if(n < 0) D = x;
 
-		 // check IF i is between D and P
-		 // if so compute prei
-		 // and hence get the prep pixel RGB and set the p pixel RGB
-		 // IF not make pixel (i,j) grey with 0xaaaaaa
-		 ?? 
+   			for (int i = x - size; i <= x + size; i++) {
+   				for(int j = y - size; j <= y + size; j++) {// <---- start a for loop for j here 
+   					// now apply IMGTRANS as per instructions 
+   					// check IF i is between D and P
+   					if(i >= D && i <= P)
+   					{
+   						// if so compute prei
+   						int prei = (int) linTrans(O, D, i, P);
+   	   					// and hence get the prep pixel RGB and set the p pixel RGB
+   						image.setRGB(i, j, temp.getRGB(prei, j));
+   					}
+   					// IF not make pixel (i,j) grey with 0xaaaaaa
+   					else
+   					{
+   						image.setRGB(i, j, 0xaaaaaa);
+   					}
 
-          // <--- end forLoop j here 
-   	} // end forLoop i
-    } // end check that A(x,y) is in image 
+   				}// <--- end forLoop j here 
+   			} // end forLoop i
+   		} // end check that A(x,y) is in image 
 
------ template code commented out END */
+//----- template code commented out END
 
- } // end method linearBox
+   } // end method linearBox
 
 // ---- END linearBox
 

@@ -122,8 +122,10 @@ public class IFrame extends JFrame implements MouseListener, MouseMotionListener
     // main method
     public static void main(String[] args) {
 
-	IFrame i= new IFrame();
-	i.setVisible(true);
+    	IFrame i= new IFrame();
+		i.setVisible(true);
+	
+		System.out.println(ImageManipulation.linTrans(0, 5, 7, 10));
     }
 
 } // IFrame
