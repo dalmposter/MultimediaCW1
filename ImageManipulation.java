@@ -18,6 +18,13 @@ import java.lang.Math.*;
 
 public class ImageManipulation {
 
+	//custom logging function. Let's me toggle output messages with the flag LOGGING
+	static final boolean LOGGING = false;
+	static void log(String msg)
+	{
+		if(LOGGING) System.out.println(msg);
+	}
+	
 	// ----- template code commented out BEGIN     
 
 	// linear transformation to compute prei from i
@@ -34,31 +41,31 @@ public class ImageManipulation {
 	// and compute (preI, PreJ) returned as elements pre[0] pre[1] of pre 
 	static int[] octlinTrans (int O, int D, int I, int J, int size) { 
 
-		System.out.println("octlinTrans(O = " + O + ", D = " + D + ", I = " + I + ", J = " + J + ", size = " + size + ") called");
+		log("octlinTrans(O = " + O + ", D = " + D + ", I = " + I + ", J = " + J + ", size = " + size + ") called");
 		// we will compute preI and preJ and return them in pre 
 		int [] pre = new int[2];
 
 		// compute d from I and J (distance from origin to i, j)
 		double d = Math.sqrt((I * I) + (J * J));
-		System.out.println("distance from origin to (i, j) is: " + d);
+		log("distance from origin to (i, j) is: " + d);
 
 		// calculate P (from theta, itself from I and J) 
 		double theta, P;
 		theta = Math.atan((double) J / (double) I);
-		System.out.println("theta is: " + Math.toDegrees(theta));
+		log("theta is: " + Math.toDegrees(theta));
 		//P's x ordinate is O + size
 		P = size / Math.cos(theta);
-		System.out.println("distance from origin to P: " + P);
-		System.out.println("with cos(theta) = " + Math.cos(theta));
+		log("distance from origin to P: " + P);
+		log("with cos(theta) = " + Math.cos(theta));
 
 		// compute pred from O, D, d, p
 		double pred = linTrans(O, size / 3, d, P);
-		System.out.println("distance from origin to (preI, preJ) is: " + pred);
+		log("distance from origin to (preI, preJ) is: " + pred);
 
 		pre[0] = (int) (pred * Math.cos(theta));
 		pre[1] = (int) (pred * Math.sin(theta));
 
-		System.out.println("returning: " + pre[0] + ", " + pre[1]);
+		log("returning: " + pre[0] + ", " + pre[1]);
 		return pre;
 
 	} // end octlinTrans
@@ -157,7 +164,7 @@ public class ImageManipulation {
 						// 0 < J < I
 						if (0 < J && J < I)
 						{
-							pre = octlinTrans(n, d, I, J, size); // use octlinTrans
+							pre = octlinTrans(0, d, I, J, size); // use octlinTrans
 						}
 						// perform linear transformation in octant OVH 
 						// 0 < -J < I 

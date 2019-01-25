@@ -124,7 +124,9 @@ public class IFrame extends JFrame implements MouseListener, MouseMotionListener
 
     	IFrame i= new IFrame();
 		i.setVisible(true);
-	
+		
+		//Make a call to octlinTrans for debugging purposes
+		//if LOGGING == true, this will output the programs intermediate working for debugging
 		ImageManipulation.octlinTrans(0, 42, 30, 30, 60);
     }
 
