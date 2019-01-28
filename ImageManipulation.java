@@ -249,18 +249,30 @@ public class ImageManipulation {
 		BufferedImage temp=new BufferedImage(image.getWidth(), image.getHeight(), image.getType());
 		(temp.getGraphics()).drawImage(image,0,0,image.getWidth(), image.getHeight(),null );
 
-		/* ----- template code commented out BEGIN 
+		// ----- template code commented out BEGIN 
 
 	// loop through each pixel (i,j) in "A(x,y) intersect (image - boundary)"
-	for (int i = ??; i<= Math.min(image.getWidth()-1-2*n, ??); ++i) {
-
-  // *****************************************************************************
-  // ?? the rest of your code goes here: a loop for j, plus remainder of your code
-  // *****************************************************************************
+	for (int i = x - size; i <= Math.min(image.getWidth()-1-2*n, x + size); ++i) {
+		for(int j = y - size; j <= Math.min(image.getHeight()-1-2*n, y + size); ++j)
+		{
+			//pure blue at i >= 300
+			if(i >= 300)
+			{
+				image.setRGB(i, j, 0x0000ff);
+			}
+			else
+			{
+				int col = temp.getRGB(i, j - (2 * n));
+				col = col >> 8;
+				col = col - ((col >> 8) << 8);
+				col = (col << 16) + (col << 8) + col;
+				image.setRGB(i, j, col);
+			}
+		}
 
 	} // end loop i 
 
-   ----- template code commented out END */
+   //----- template code commented out END 
 
 	} // end method phaseShift 
 
