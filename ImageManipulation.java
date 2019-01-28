@@ -251,26 +251,37 @@ public class ImageManipulation {
 
 		// ----- template code commented out BEGIN 
 
-	// loop through each pixel (i,j) in "A(x,y) intersect (image - boundary)"
-	for (int i = x - size; i <= Math.min(image.getWidth()-1-2*n, x + size); ++i) {
-		for(int j = y - size; j <= Math.min(image.getHeight()-1-2*n, y + size); ++j)
-		{
-			//pure blue at i >= 300
-			if(i >= 300)
+		// loop through each pixel (i,j) in "A(x,y) intersect (image - boundary)"
+		for (int i = x - size; i <= Math.min(image.getWidth()-1-2*n, x + size); ++i) {
+			for(int j = y - size; j <= Math.min(image.getHeight()-1-2*n, y + size); ++j)
 			{
-				image.setRGB(i, j, 0x0000ff);
-			}
-			else
-			{
-				int col = temp.getRGB(i, j - (2 * n));
-				col = col >> 8;
-				col = col - ((col >> 8) << 8);
-				col = (col << 16) + (col << 8) + col;
-				image.setRGB(i, j, col);
-			}
-		}
+				//pure blue at i >= 300
+				if(i >= 300)
+				{
+					image.setRGB(i, j, 0x0000ff);
+				}
+				else
+				{
+					// set R,G,B each to G of found pixel
+					//TODO: streamline this
+					int col = temp.getRGB(i, j - (2 * n));
 
-	} // end loop i 
+					//get G on the end
+					col = col >> 8;
+
+					//shove G off the end to get the difference between col and G so we can subtract it
+					//col is now 1 byte representing only the green component of the found pixel
+					col = col - ((col >> 8) << 8);
+
+					//put col in each of the 3 bytes
+					col = (col << 16) + (col << 8) + col;
+
+					//set colour in image
+					image.setRGB(i, j, colWIP);
+				}
+			} // end loop j
+
+		} // end loop i 
 
    //----- template code commented out END 
 
