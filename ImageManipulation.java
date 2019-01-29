@@ -277,7 +277,7 @@ public class ImageManipulation {
 					col = (col << 16) + (col << 8) + col;
 
 					//set colour in image
-					image.setRGB(i, j, colWIP);
+					image.setRGB(i, j, col);
 				}
 			} // end loop j
 
