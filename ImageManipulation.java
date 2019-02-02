@@ -131,6 +131,7 @@ public class ImageManipulation {
 		(temp.getGraphics()).drawImage(image, 0, 0, image.getWidth(), image.getHeight(),null);
 
 		// ----- template code commented out BEGIN     
+		if(n < 0) n = 0;
 
 		// check if A(x,y) lies within image
 		if (x + size < image.getWidth() && x - size >= 0 && y + size < image.getHeight() && y - size >= 0) {
@@ -252,8 +253,8 @@ public class ImageManipulation {
 		// ----- template code commented out BEGIN 
 
 		// loop through each pixel (i,j) in "A(x,y) intersect (image - boundary)"
-		for (int i = x - size; i <= Math.min(image.getWidth()-1-2*n, x + size); ++i) {
-			for(int j = y - size; j <= Math.min(image.getHeight()-1-2*n, y + size); ++j)
+		for (int i = Math.max(x - size, 2 * n); i <= Math.min(image.getWidth()-1-2*n, x + size); ++i) {
+			for(int j = Math.max(y - size, 2 * n); j <= Math.min(image.getHeight()-1-2*n, y + size); ++j)
 			{
 				//pure blue at i >= 300
 				if(i >= 300)
